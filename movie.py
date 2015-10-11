@@ -19,6 +19,11 @@ class Movie(Base):
     movie = Column(String(100))
     ispublic = Column(Boolean)
 
+    def __repr__(self):
+        return "<Movie(%s,%s,%s)>" % (
+            self.movie,self.sent_ch,self.sent_en
+        )
+
 
 engine = create_engine("sqlite:///movie.db")
 DBSession = sessionmaker(bind=engine)
