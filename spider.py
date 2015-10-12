@@ -35,6 +35,8 @@ class MovieHtmlParser(HTMLParser):
         self.movies = []
         self.isp = False
         self.num_movie = 0
+        self.have_pic = False
+        self.pic = []
 
     def handle_data(self, data):
         if self.isp:
@@ -47,10 +49,17 @@ class MovieHtmlParser(HTMLParser):
             self.num_movie += 1
         if tag == "p":
             self.isp = True
+        if tag == "img":
+            if self.isp and not self.have_pic:
+                self.pic.append(
+                    attrs[1][1]
+                )
+                self.have_pic = True
 
     def handle_endtag(self, tag):
         if tag == "p":
             self.isp = False
+            self.have_pic = False
 
     def handle_charref(self,name):
         try:
@@ -68,11 +77,15 @@ class LFMspider(object):
     movies = []
 
     def start(self):
-        html_page = urllib2.urlopen(self.start_url).read()
+        html_page = urllib2.urlopen(
+            self.start_url).read()
         # print html_page
         # self.on_every_page(html_page)
         begin = MovieHtmlParser()
-        begin.feed(begin.unescape(html_page))
+        html = begin.unescape(html_page)
+        begin.feed(html)
+        for pc in begin.pic:
+            print pc
         begin.close()
 
     def on_every_page(self,html):
