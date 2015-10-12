@@ -52,6 +52,15 @@ class MovieHtmlParser(HTMLParser):
         if tag == "p":
             self.isp = False
 
+    def handle_charref(self,name):
+        try:
+            charnum=int(name)
+        except ValueError:
+            return
+        if charnum<1 or charnum>255:
+            return
+        self.handle_data(chr(charnum))
+
 class LFMspider(object):
     "spider on lessonsfrommocies"
     limit_url = "http://lessonsfrommovies.net/"
@@ -63,7 +72,7 @@ class LFMspider(object):
         # print html_page
         # self.on_every_page(html_page)
         begin = MovieHtmlParser()
-        begin.feed(html_page)
+        begin.feed(begin.unescape(html_page))
         begin.close()
 
     def on_every_page(self,html):
