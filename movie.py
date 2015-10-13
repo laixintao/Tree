@@ -12,13 +12,15 @@ class Movie(Base):
     __tablename__ = 'movie'
 
     id = Column(Integer,primary_key=True)
+    post_title = Column(String(200))
     sent_ch = Column(String(200))
     sent_en = Column(String(200))
     pic_url = Column(String(200))
     pic_localname = Column(String(200))
     url = Column(String(300))
     movie = Column(String(100))
-    ispublic = Column(Boolean)
+    ispublic = Column(Boolean,default=False)
+    couldPublic = Column(Boolean,default=True)
 
     def __repr__(self):
         return "<Movie(%s,%s,%s)>" % (

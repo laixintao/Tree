@@ -32,34 +32,80 @@ class PageFormatError(BaseException):
 class MovieHtmlParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
-        self.movies = []
+        self.ispost = False
+        # self.movies = []
         self.isp = False
-        self.num_movie = 0
-        self.have_pic = False
-        self.pic = []
+        self.istitle = False
+        # self.num_movie = 0
+        # self.have_pic = False
+        self.pic = ""
+        self.hasurl = False
+        self.url = ""
+        self.title = ""
+        self.ch_sent=""
+        self.en_sent=""
+        self.movie=""
+        self.line = 0
+
+    def show_data(self):
+        print "title:",self.title
+        print "url:",self.url
+        print "movie:",self.movie
+        print "pic:",self.pic
+        print "ch:",self.ch_sent
+        print "en:",self.en_sent
+        print("-"*20)
+
+
 
     def handle_data(self, data):
         if self.isp:
-            print self.num_movie,data
+            # print self.line,data
+            if len(data)>4:
+                if self.line==0:
+                    self.ch_sent = data
+                    # self.line += 1
+                elif self.line == 1:
+                    self.en_sent = data
+                elif self.line == 2:
+                    self.movie = data
+                self.line += 1
+            else:
+                # print "*"*20,data
+                pass
+        if self.istitle:
+            self.title = data
         else:
             pass
 
     def handle_starttag(self, tag, attrs):
-        if tag == "div" and attrs[0][1] == "entry-content":
-            self.num_movie += 1
+        if tag == "h1" and attrs[0][1]=="entry-title":
+            self.ispost = True
+            self.istitle = True
+        # if tag == "div" and attrs[0][1] == "entry-content":
+        #     self.line += 1
         if tag == "p":
             self.isp = True
         if tag == "img":
-            if self.isp and not self.have_pic:
-                self.pic.append(
-                    attrs[1][1]
-                )
+            if self.isp:
+                self.pic=attrs[1][1]
                 self.have_pic = True
+        if tag == "a" and self.istitle:
+            self.url = attrs[0][1]
+            self.hasurl = True
+
 
     def handle_endtag(self, tag):
         if tag == "p":
             self.isp = False
-            self.have_pic = False
+            # self.have_pic = False
+        if tag == "article":
+            self.show_data()
+            self.line = 0;
+            self.ispost = False
+
+        if tag == "h1":
+            self.istitle = False
 
     def handle_charref(self,name):
         try:
@@ -84,8 +130,9 @@ class LFMspider(object):
         begin = MovieHtmlParser()
         html = begin.unescape(html_page)
         begin.feed(html)
-        for pc in begin.pic:
-            print pc
+        # begin.show_data()
+        # for pc in begin.pic:
+        #     print pc
         begin.close()
 
     def on_every_page(self,html):
