@@ -103,10 +103,10 @@ class MovieHtmlParser(HTMLParser):
             self.url = attrs[0][1]
             self.hasurl = True
         # drop
-        if tag == "a" :
-            if attrs[0][1] =="next page-numbers":
-                self.next_page_url==attrs[1][1]
-                print self.next_page_url
+        # if tag == "a" :
+        #     if attrs[0][1] =="next page-numbers":
+        #         self.next_page_url==attrs[1][1]
+        #         print self.next_page_url
 
 
     def handle_endtag(self, tag):
@@ -165,7 +165,7 @@ class LFMspider(object):
         # begin.close()
         timeout_url = []
         npl = "http://lessonsfrommovies.net/?paged="
-        for i in range(20,611):
+        for i in range(85,611):
             url = npl+str(i)
             print url,
             try:
