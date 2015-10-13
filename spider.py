@@ -114,7 +114,7 @@ class MovieHtmlParser(HTMLParser):
             self.isp = False
             # self.have_pic = False
         if tag == "article":
-            self.show_data()
+            # self.show_data()
             self.line = 0;
             self.ispost = False
 
@@ -151,24 +151,29 @@ class LFMspider(object):
         timeout_url = []
         npl = "http://lessonsfrommovies.net/?paged="
         for i in range(1,611):
-            print ""
             url = npl+str(i)
-            print url
+            print url,
             try:
                 html = urllib2.urlopen(url,
                                        timeout=10).read()
             except urllib2.URLError,e:
                 timeout_url.append(url)
-                print "*"*30,"TIME OUT","*"*30
-                print url
-                print "*"*30,"TIME OUT","*"*30
+                print "timeout"
                 continue
             html = begin.unescape(html)
             # print html
             # print "*"*100
             begin.feed(html)
+            print "ok"
             time.sleep(10)
         begin.close()
+        for u in url:
+            print u
+        file = open("timeout_url.txt","w")
+        for u in timeout_url:
+            file.write(u)
+        file.close()
+
 
 
 
