@@ -148,12 +148,21 @@ class LFMspider(object):
         # for pc in begin.pic:
         #     print pc
         # begin.close()
+        timeout_url = []
         npl = "http://lessonsfrommovies.net/?paged="
         for i in range(1,611):
             print ""
             url = npl+str(i)
             print url
-            html = urllib2.urlopen(url).read()
+            try:
+                html = urllib2.urlopen(url,
+                                       timeout=10).read()
+            except urllib2.URLError,e:
+                timeout_url.append(url)
+                print "*"*30,"TIME OUT","*"*30
+                print url
+                print "*"*30,"TIME OUT","*"*30
+                continue
             html = begin.unescape(html)
             # print html
             # print "*"*100
