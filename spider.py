@@ -6,7 +6,7 @@ __author__="laixintao"
 import urllib2
 import re
 import time
-from movie import Movie
+from movie import Movie,DBSession
 from HTMLParser import HTMLParser
 
 # set the system encoding
@@ -115,11 +115,26 @@ class MovieHtmlParser(HTMLParser):
             # self.have_pic = False
         if tag == "article":
             # self.show_data()
+            self.add_to_db()
             self.line = 0;
             self.ispost = False
-
         if tag == "h1":
             self.istitle = False
+
+    def add_to_db(self):
+        s = DBSession()
+        m = Movie(
+            post_title=self.title,
+            sent_ch=self.ch_sent,
+            sent_en=self.en_sent,
+            pic_url=self.pic,
+            pic_localname="",
+            url=self.url,
+            movie=self.movie
+        )
+        s.add(m)
+        s.commit()
+        s.close()
 
     def handle_charref(self,name):
         try:
@@ -150,13 +165,13 @@ class LFMspider(object):
         # begin.close()
         timeout_url = []
         npl = "http://lessonsfrommovies.net/?paged="
-        for i in range(1,611):
+        for i in range(20,611):
             url = npl+str(i)
             print url,
             try:
                 html = urllib2.urlopen(url,
                                        timeout=10).read()
-            except urllib2.URLError,e:
+            except Exception,e:
                 timeout_url.append(url)
                 print "timeout"
                 continue
