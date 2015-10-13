@@ -5,6 +5,7 @@ __author__="laixintao"
 
 import urllib2
 import re
+import time
 from movie import Movie
 from HTMLParser import HTMLParser
 
@@ -46,6 +47,13 @@ class MovieHtmlParser(HTMLParser):
         self.en_sent=""
         self.movie=""
         self.line = 0
+        self.next_page_url = ""
+
+    def get_next_page_url(self):
+        return self.next_page_url
+
+    def clear_next_page_url(self):
+        self.next_page_url = None
 
     def show_data(self):
         print "title:",self.title
@@ -69,6 +77,7 @@ class MovieHtmlParser(HTMLParser):
                     self.en_sent = data
                 elif self.line == 2:
                     self.movie = data
+                else :pass
                 self.line += 1
             else:
                 # print "*"*20,data
@@ -93,6 +102,11 @@ class MovieHtmlParser(HTMLParser):
         if tag == "a" and self.istitle:
             self.url = attrs[0][1]
             self.hasurl = True
+        # drop
+        if tag == "a" :
+            if attrs[0][1] =="next page-numbers":
+                self.next_page_url==attrs[1][1]
+                print self.next_page_url
 
 
     def handle_endtag(self, tag):
@@ -123,17 +137,31 @@ class LFMspider(object):
     movies = []
 
     def start(self):
-        html_page = urllib2.urlopen(
-            self.start_url).read()
+        # html_page = urllib2.urlopen(
+        #     self.start_url).read()
         # print html_page
         # self.on_every_page(html_page)
         begin = MovieHtmlParser()
-        html = begin.unescape(html_page)
-        begin.feed(html)
+        # html = begin.unescape(html_page)
+        # begin.feed(html)
         # begin.show_data()
         # for pc in begin.pic:
         #     print pc
+        # begin.close()
+        npl = "http://lessonsfrommovies.net/?paged="
+        for i in range(1,611):
+            print ""
+            url = npl+str(i)
+            print url
+            html = urllib2.urlopen(url).read()
+            html = begin.unescape(html)
+            # print html
+            # print "*"*100
+            begin.feed(html)
+            time.sleep(10)
         begin.close()
+
+
 
     def on_every_page(self,html):
         num_post = 3 #3 post on each page
