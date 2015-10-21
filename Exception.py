@@ -1,0 +1,2 @@
+class PageFormatError(BaseException):
+    pass
