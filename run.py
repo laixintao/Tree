@@ -10,8 +10,6 @@ if __name__ == "__main__":
         pass
     else:
         create_table()
-
     lfmspider = LFMspider()
-    with open()
-    try:
-        lfmspider.start()
+    lfmspider.start()
+
