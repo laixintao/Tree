@@ -20,16 +20,6 @@ if sys.getdefaultencoding() != default_encoding:
 class PageFormatError(BaseException):
     pass
 
-# don't need a standalone data structure
-# just use movie
-# class Item():
-#     "data structure"
-#     sent_ch = ""
-#     sent_en = ""
-#     pic = ""
-#     movie = ""
-#     url = ""
-
 class MovieHtmlParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
@@ -91,8 +81,6 @@ class MovieHtmlParser(HTMLParser):
         if tag == "h1" and attrs[0][1]=="entry-title":
             self.ispost = True
             self.istitle = True
-        # if tag == "div" and attrs[0][1] == "entry-content":
-        #     self.line += 1
         if tag == "p":
             self.isp = True
         if tag == "img":
@@ -102,11 +90,6 @@ class MovieHtmlParser(HTMLParser):
         if tag == "a" and self.istitle:
             self.url = attrs[0][1]
             self.hasurl = True
-        # drop
-        # if tag == "a" :
-        #     if attrs[0][1] =="next page-numbers":
-        #         self.next_page_url==attrs[1][1]
-        #         print self.next_page_url
 
 
     def handle_endtag(self, tag):
@@ -149,20 +132,9 @@ class LFMspider(object):
     "spider on lessonsfrommocies"
     limit_url = "http://lessonsfrommovies.net/"
     start_url = limit_url
-    movies = []
 
     def start(self):
-        # html_page = urllib2.urlopen(
-        #     self.start_url).read()
-        # print html_page
-        # self.on_every_page(html_page)
         begin = MovieHtmlParser()
-        # html = begin.unescape(html_page)
-        # begin.feed(html)
-        # begin.show_data()
-        # for pc in begin.pic:
-        #     print pc
-        # begin.close()
         timeout_url = []
         npl = "http://lessonsfrommovies.net/?paged="
         for i in range(85,611):
@@ -176,8 +148,6 @@ class LFMspider(object):
                 print "timeout"
                 continue
             html = begin.unescape(html)
-            # print html
-            # print "*"*100
             begin.feed(html)
             print "ok"
             time.sleep(10)
@@ -191,21 +161,5 @@ class LFMspider(object):
 
 
 
-
-    def on_every_page(self,html):
-        num_post = 3 #3 post on each page
-        entry_content = re.compile(
-            r'entry.content[\s\S]*?\.entry.content')
-            # r"<p>[\s\S]*?</p>")
-        p = re.compile(r"<p>[\s\S]*?</p>")
-        each = entry_content.findall(html)
-        # for i in each:
-            # print "---------"
-            # movie = Movie()
-            # ps = p.findall(i)
-            # for ii in ps:
-            #     print ii
-        return each
-
 if __name__ == "__main__":
-    print "ss"
+    pass
