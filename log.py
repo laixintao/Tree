@@ -29,16 +29,27 @@ class Log(object):
     def __del__(self):
         self.log_file.close()
         self.timeout_log_file.close()
+        # to test if the __del__ is actually called
+        # print "del..."
+
+lf = Log()
+
+# public function
+def log(msg):
+    lf.log(msg)
+
+def logtimeout(url):
+    lf.log_timeout(url)
+
 
 if __name__ == "__main__":
     print "test local_time()..."
     print Log().local_time()
     print "test log()..."
-    l = Log()
-    l.log("test log...")
+    log("test log...")
     for i in range(10):
         print "test log..."+str(i)
-        l.log("test log..."+str(i))
+        log("test log..."+str(i))
         time.sleep(1)
-    l.log_timeout("123")
+    logtimeout("123")
     print "test ok."
