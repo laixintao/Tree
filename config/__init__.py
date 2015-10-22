@@ -8,4 +8,7 @@ LOG_PATH = PROJECT_PATH + "log/"
 TIME_OUT_LOG_PATH = LOG_PATH +"timeout.log"
 DETAIL_LOG_PATH = LOG_PATH + "detail.log"
 
+START_PAGE = 1
+END_PAGE = 600
+
 lf = None

@@ -23,8 +23,8 @@ class Movie(Base):
     couldPublic = Column(Boolean,default=True)
 
     def __repr__(self):
-        return "<Movie(%s,%s,%s)>" % (
-            self.movie,self.sent_ch,self.sent_en
+        return "<Movie(%s,%s,%s,%s)>" % (
+            self.movie,self.url,self.sent_ch,self.sent_en
         )
 
 

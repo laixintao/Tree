@@ -2,7 +2,7 @@ __author__ = 'laixintao'
 
 import os
 from MovieDB import create_table
-from spider import LFMspider
+from LFMSpider import LFMSpider
 from config import MOVIE_DB_PATH
 
 if __name__ == "__main__":
@@ -10,6 +10,6 @@ if __name__ == "__main__":
         pass
     else:
         create_table()
-    lfmspider = LFMspider()
+    lfmspider = LFMSpider()
     lfmspider.start()
 
