@@ -87,6 +87,7 @@ class MovieHtmlParser(HTMLParser):
         if tag == "a" and self.istitle:
             self.url = attrs[0][1]
             self.hasurl = True
+            self.id = re.findall(r"[\d]{1,5}",self.url)[0]
 
 
     def handle_endtag(self, tag):
@@ -107,7 +108,6 @@ class MovieHtmlParser(HTMLParser):
             old = s.query(Movie).filter(Movie.url==self.url).first()
             if old == None:
             # if True:
-                self.id = re.findall(r"[\d]{1,5}",self.url)[0]
                 m = Movie(
                     post_title=self.title,
                     sent_ch=self.ch_sent,
