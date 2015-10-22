@@ -29,6 +29,7 @@ class Movie(Base):
         )
 
     def print_info(self):
+        print self.id
         print self.movie
         print self.url
         print self.sent_ch

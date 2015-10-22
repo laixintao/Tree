@@ -106,6 +106,8 @@ class MovieHtmlParser(HTMLParser):
             s = DBSession()
             old = s.query(Movie).filter(Movie.url==self.url).first()
             if old == None:
+            # if True:
+                self.id = re.findall(r"[\d]{1,5}",self.url)[0]
                 m = Movie(
                     post_title=self.title,
                     sent_ch=self.ch_sent,
