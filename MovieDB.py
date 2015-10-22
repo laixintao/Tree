@@ -62,22 +62,26 @@ def list_moive_could_public():
 
 def movie_check():
     session = DBSession()
-    movies = session.query(Movie).filter(Movie.checked==False)
-    for m in movies:
-        print ""
-        print "-"*30
-        m.print_info()
-        could_publish = Boolean(raw_input("1 for True; 2 for False; 3 for next;"))
-        if could_publish == 1:
-            m.couldpublish = True
-            m.checked = True
-            session.add(m)
-        elif could_publish == 2:
-            m.couldpublish = False
-            m.checked == True
-            session.add(m)
+    while True:
+        movie = session.query(Movie).filter(Movie.checked==False).first()
+        if movie != None:
+            print ""
+            print "-"*30
+            movie.print_info()
+            could_publish = int(raw_input("1 for True; 2 for False; 3 for next;"))
+            if could_publish == 1:
+                movie.couldPublish = True
+                movie.checked = True
+                session.add(movie)
+            elif could_publish == 2:
+                movie.couldPublish = False
+                movie.checked = True
+                session.add(movie)
+            else:
+                pass
+            # session.commit()
         else:
-            pass
+            break
     session.commit()
     session.close()
 
