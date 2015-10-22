@@ -1,7 +1,7 @@
 __author__ = 'laixintao'
 
 import os
-from MovieDB import create_table
+from moviedb import create_table
 from LFMSpider import LFMSpider
 from config import MOVIE_DB_PATH
 

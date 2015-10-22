@@ -6,7 +6,7 @@ __author__="laixintao"
 import urllib2
 import re
 import time
-from MovieDB import Movie,DBSession
+from moviedb import Movie,DBSession
 from HTMLParser import HTMLParser
 from log import log
 
@@ -105,7 +105,6 @@ class MovieHtmlParser(HTMLParser):
         try:
             s = DBSession()
             old = s.query(Movie).filter(Movie.url==self.url).first()
-            print old
             if old == None:
                 m = Movie(
                     post_title=self.title,
@@ -119,11 +118,9 @@ class MovieHtmlParser(HTMLParser):
                 s.add(m)
                 s.commit()
                 log_info = "add "+str(self.url)+" to DB successfully..."
-                print log_info
                 log(log_info)
             else:
                 log(str(self.url)+" has already exist...")
-                print "---exist"
             s.close()
         except Exception,e:
             log("error when add to db..."+str(e))
