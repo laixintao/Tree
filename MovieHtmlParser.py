@@ -9,6 +9,7 @@ import time
 from moviedb import Movie,DBSession
 from HTMLParser import HTMLParser
 from log import log
+from config import PINTURE_PATH
 
 # set the system encoding
 import sys
@@ -33,6 +34,7 @@ class MovieHtmlParser(HTMLParser):
         self.ch_sent=""
         self.en_sent=""
         self.movie=""
+        self.pic_local = ""
         self.line = 0
         self.next_page_url = ""
 
@@ -106,14 +108,24 @@ class MovieHtmlParser(HTMLParser):
         try:
             s = DBSession()
             old = s.query(Movie).filter(Movie.url==self.url).first()
-            if old == None:
-            # if True:
+            # if old == None:
+            if True:
+                try:
+                    suffix = re.findall(r"\.[a-z]{3,4}$",self.pic)[0]
+                    pic_name = PINTURE_PATH + str(self.id) + suffix
+                    imgdata = urllib2.urlopen(self.pic,timeout=10).read()
+                    file = open(pic_name,"wb+")
+                    file.write(imgdata)
+                    file.close()
+                    self.pic_local = pic_name
+                except Exception,e:
+                    log("error in download pic..."+str(e))
                 m = Movie(
                     post_title=self.title,
                     sent_ch=self.ch_sent,
                     sent_en=self.en_sent,
                     pic_url=self.pic,
-                    pic_localname="",
+                    pic_localname=self.pic_local,
                     url=self.url,
                     movie=self.movie
                 )
