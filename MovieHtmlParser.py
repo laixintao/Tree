@@ -8,6 +8,7 @@ import re
 import time
 from MovieDB import Movie,DBSession
 from HTMLParser import HTMLParser
+from log import log
 
 # set the system encoding
 import sys
@@ -101,19 +102,23 @@ class MovieHtmlParser(HTMLParser):
             self.istitle = False
 
     def add_to_db(self):
-        s = DBSession()
-        m = Movie(
-            post_title=self.title,
-            sent_ch=self.ch_sent,
-            sent_en=self.en_sent,
-            pic_url=self.pic,
-            pic_localname="",
-            url=self.url,
-            movie=self.movie
-        )
-        s.add(m)
-        s.commit()
-        s.close()
+        try:
+            s = DBSession()
+            m = Movie(
+                post_title=self.title,
+                sent_ch=self.ch_sent,
+                sent_en=self.en_sent,
+                pic_url=self.pic,
+                pic_localname="",
+                url=self.url,
+                movie=self.movie
+            )
+            s.add(m)
+            s.commit()
+            s.close()
+            log("add to DB successfully...")
+        except Exception,e:
+            log("error when add to db..."+str(e))
 
     def handle_charref(self,name):
         try:
