@@ -1,0 +1,5 @@
+1. reread the timeout urls
+2. check the db if all pic url has been downloaded to local disk
+3. check every movie if could be published
+4. update movie
+5. publish on weibo

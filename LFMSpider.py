@@ -42,10 +42,12 @@ class LFMSpider(object):
 if __name__ == "__main__":
     lfs = LFMSpider()
     print "parser page..."
-    lfs.parser_one_page(12)
-    for i in range(43,46):
-        lfs.parser_one_page(i)
-    print "finish"
-    print "test parser pages...2 to 20"
-    lfs.parser_pages(2,20)
+    lfs.parser_one_page(14)
+    lfs.parser_one_page(15)
+    lfs.parser_one_page(16)
+    # for i in range(43,46):
+    #     lfs.parser_one_page(i)
+    # print "finish"
+    # print "test parser pages...2 to 20"
+    # lfs.parser_pages(2,20)
 
