@@ -19,8 +19,9 @@ class Movie(Base):
     pic_localname = Column(String(200))
     url = Column(String(300))
     movie = Column(String(100))
-    ispublic = Column(Boolean,default=False)
-    couldPublic = Column(Boolean,default=True)
+    ispublish = Column(Boolean,default=False)
+    couldPublish = Column(Boolean,default=False)
+    checked = Column(Boolean,default=False)
 
     def __repr__(self):
         return "<Movie(%s,%s,%s,%s)>" % (
@@ -33,6 +34,7 @@ class Movie(Base):
         print self.sent_ch
         print self.sent_en
         print self.pic_localname
+        print "ispublish?",self.ispublish," couldpublish?",self.couldPublish," checked?",self.checked
 
 engine = create_engine("sqlite:///movie.db")
 DBSession = sessionmaker(bind=engine)
@@ -44,8 +46,49 @@ def list_movie():
     session = DBSession()
     movies = session.query(Movie)
     for m in movies:
+        print ""
+        print "-"*30
         m.print_info()
     session.close()
 
+def list_moive_could_public():
+    session = DBSession()
+    movies = session.query(Movie).filter(Movie.couldPublish==True)
+    for m in movies:
+        print ""
+        print "-"*30
+        m.print_info()
+    session.close()
+
+def movie_check():
+    session = DBSession()
+    movies = session.query(Movie).filter(Movie.checked==False)
+    for m in movies:
+        print ""
+        print "-"*30
+        m.print_info()
+        could_publish = Boolean(raw_input("1 for True; 2 for False; 3 for next;"))
+        if could_publish == 1:
+            m.couldpublish = True
+            m.checked = True
+            session.add(m)
+        elif could_publish == 2:
+            m.couldpublish = False
+            m.checked == True
+            session.add(m)
+        else:
+            pass
+    session.commit()
+    session.close()
+
 if __name__ == "__main__":
-    list_movie()
+    action = int(raw_input("What you want to do ?\n"
+                           "1 for list all movies;\n"
+                           "2 for list the movies could publish;\n"
+                           "3 for list the uncheck movies and give a check;\n"))
+    if action == 1:
+        list_movie()
+    elif action == 2:
+        list_moive_could_public()
+    elif action == 3:
+        movie_check()
