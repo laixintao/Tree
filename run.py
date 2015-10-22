@@ -11,5 +11,5 @@ if __name__ == "__main__":
     else:
         create_table()
     lfmspider = LFMSpider()
-    lfmspider.start()
+    lfmspider.parser_all_pages()
 

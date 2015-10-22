@@ -31,6 +31,14 @@ class LFMSpider(object):
         finally:
             mhp.close()
 
+    def parser_pages(self,start_page,end_page,timeleg=10):
+        for i in range(start_page,end_page+1): # include the end_page
+            time.sleep(timeleg)
+            self.parser_one_page(i)
+
+    def parser_all_pages(self,timeleg=10):
+        self.parser_pages(1,600,timeleg)
+
 if __name__ == "__main__":
     lfs = LFMSpider()
     print "parser page..."
@@ -38,4 +46,6 @@ if __name__ == "__main__":
     for i in range(43,46):
         lfs.parser_one_page(i)
     print "finish"
+    print "test parser pages...2 to 20"
+    lfs.parser_pages(2,20)
 
