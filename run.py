@@ -14,7 +14,7 @@ if __name__ == "__main__":
         else:
             create_table()
         lfmspider = LFMSpider()
-        lfmspider.parser_all_pages(0)
+        lfmspider.parser_all_pages()
     except Exception,e:
         log(str(e))
     finally:

@@ -108,8 +108,8 @@ class MovieHtmlParser(HTMLParser):
         try:
             s = DBSession()
             old = s.query(Movie).filter(Movie.url==self.url).first()
-            # if old == None:
-            if True:
+            if old == None:
+            # if True:
                 try:
                     suffix = re.findall(r"\.[a-z]{3,4}$",self.pic)[0]
                     pic_name = PINTURE_PATH + str(self.id) + suffix
@@ -121,6 +121,7 @@ class MovieHtmlParser(HTMLParser):
                 except Exception,e:
                     log("error in download pic..."+str(e))
                 m = Movie(
+                    id = self.id,
                     post_title=self.title,
                     sent_ch=self.ch_sent,
                     sent_en=self.en_sent,
