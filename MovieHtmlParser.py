@@ -104,19 +104,27 @@ class MovieHtmlParser(HTMLParser):
     def add_to_db(self):
         try:
             s = DBSession()
-            m = Movie(
-                post_title=self.title,
-                sent_ch=self.ch_sent,
-                sent_en=self.en_sent,
-                pic_url=self.pic,
-                pic_localname="",
-                url=self.url,
-                movie=self.movie
-            )
-            s.add(m)
-            s.commit()
+            old = s.query(Movie).filter(Movie.url==self.url).first()
+            print old
+            if old == None:
+                m = Movie(
+                    post_title=self.title,
+                    sent_ch=self.ch_sent,
+                    sent_en=self.en_sent,
+                    pic_url=self.pic,
+                    pic_localname="",
+                    url=self.url,
+                    movie=self.movie
+                )
+                s.add(m)
+                s.commit()
+                log_info = "add "+str(self.url)+" to DB successfully..."
+                print log_info
+                log(log_info)
+            else:
+                log(str(self.url)+" has already exist...")
+                print "---exist"
             s.close()
-            log("add to DB successfully...")
         except Exception,e:
             log("error when add to db..."+str(e))
 
