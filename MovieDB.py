@@ -97,11 +97,14 @@ def movie_check():
 
 def movie_without_pic():
     session = DBSession()
-    movies = session.query(Movie)
+    tobe_download = []
+    movies = session.query(Movie).filter(Movie.couldPublish==True)
     for m in movies:
         pic_path = m.pic_localname
         if not os.path.exists(pic_path):
-            print m.id,m.pic_url
+            tmp = (m.pic_localname,m.pic_url)
+            tobe_download.append(tmp)
+    return tobe_download
 
 
 if __name__ == "__main__":

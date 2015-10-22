@@ -113,10 +113,6 @@ class MovieHtmlParser(HTMLParser):
                 try:
                     suffix = re.findall(r"\.[a-z]{3,4}$",self.pic)[0]
                     pic_name = PINTURE_PATH + str(self.id) + suffix
-                    # imgdata = urllib2.urlopen(self.pic,timeout=20).read()
-                    # file = open(pic_name,"wb+")
-                    # file.write(imgdata)
-                    # file.close()
                     self.pic_local = pic_name
                 except Exception,e:
                     log("[ERR]error in download pic..."+str(e))
