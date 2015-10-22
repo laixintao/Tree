@@ -113,13 +113,17 @@ class MovieHtmlParser(HTMLParser):
                 try:
                     suffix = re.findall(r"\.[a-z]{3,4}$",self.pic)[0]
                     pic_name = PINTURE_PATH + str(self.id) + suffix
-                    imgdata = urllib2.urlopen(self.pic,timeout=10).read()
-                    file = open(pic_name,"wb+")
-                    file.write(imgdata)
-                    file.close()
+                    # imgdata = urllib2.urlopen(self.pic,timeout=20).read()
+                    # file = open(pic_name,"wb+")
+                    # file.write(imgdata)
+                    # file.close()
                     self.pic_local = pic_name
                 except Exception,e:
-                    log("error in download pic..."+str(e))
+                    log("[ERR]error in download pic..."+str(e))
+                year = False
+                if len(re.findall(r"[\d]{4}$",self.movie)) >= 1:
+                    year = True
+                    print self.movie
                 m = Movie(
                     id = self.id,
                     post_title=self.title,
@@ -128,17 +132,18 @@ class MovieHtmlParser(HTMLParser):
                     pic_url=self.pic,
                     pic_localname=self.pic_local,
                     url=self.url,
-                    movie=self.movie
+                    movie=self.movie,
+                    couldPublish = year
                 )
                 s.add(m)
                 s.commit()
-                log_info = "add "+str(self.url)+" to DB successfully..."
+                log_info = "[O K]add "+str(self.url)+" to DB successfully..."
                 log(log_info)
             else:
-                log(str(self.url)+" has already exist...")
+                log("[O K]"+str(self.url)+" has already exist...")
             s.close()
         except Exception,e:
-            log("error when add to db..."+str(e))
+            log("[ERR]error when add to db..."+str(e))
 
     def handle_charref(self,name):
         try:

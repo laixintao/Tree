@@ -5,6 +5,7 @@ __author__ = 'laixintao'
 from sqlalchemy import Column,String,create_engine,Integer,Boolean
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+import os
 
 Base = declarative_base()
 
@@ -60,6 +61,14 @@ def list_moive_could_public():
         print "-"*30
         m.print_info()
     session.close()
+def list_moive_could_not_public():
+    session = DBSession()
+    movies = session.query(Movie).filter(Movie.couldPublish==False)
+    for m in movies:
+        print ""
+        print "-"*30
+        m.print_info()
+    session.close()
 
 def movie_check():
     session = DBSession()
@@ -86,14 +95,29 @@ def movie_check():
     session.commit()
     session.close()
 
+def movie_without_pic():
+    session = DBSession()
+    movies = session.query(Movie)
+    for m in movies:
+        pic_path = m.pic_localname
+        if not os.path.exists(pic_path):
+            print m.id,m.pic_url
+
+
 if __name__ == "__main__":
     action = int(raw_input("What you want to do ?\n"
                            "1 for list all movies;\n"
                            "2 for list the movies could publish;\n"
-                           "3 for list the uncheck movies and give a check;\n"))
+                           "3 for list the uncheck movies and give a check;\n"
+                           "4 for list movie without pic;\n"
+                           "5 for list the movies could NOT publish;\n"))
     if action == 1:
         list_movie()
     elif action == 2:
         list_moive_could_public()
     elif action == 3:
         movie_check()
+    elif action == 4:
+        movie_without_pic()
+    elif action == 5:
+        list_moive_could_not_public()

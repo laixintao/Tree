@@ -12,22 +12,22 @@ class LFMSpider(object):
         mhp = MovieHtmlParser()
         url = self.next_page_url_head + str(page_num)
         print url,
-        log("start parser page"+str(page_num))
+        log("[STR]start parser page"+str(page_num))
         try:
             html = urllib2.urlopen(url,
                                    timeout=10).read()
-            log("open..."+url+"...ok")
+            log("[O K]open..."+url+"...ok")
         except Exception,e:
-            log("error in open url"+"..."+str(e))
+            log("[ERR]error in open url"+"..."+str(e))
             print "timeout"
             logtimeout(url)
         try:
             html = mhp.unescape(html)
             mhp.feed(html)
             print "ok"
-            log("html parser..."+"ok")
+            log("[O K]html parser..."+"ok")
         except Exception,e:
-            log("error..."+str(e))
+            log("[ERR]error..."+str(e))
         finally:
             mhp.close()
 
