@@ -1,3 +1,10 @@
+#!usr/bin/python
+
+""" This module provide log method to log the information and Exception.
+lf should be in global var ,adn should have only one.
+log() & logtimeout() will be two public methods.
+"""
+
 from config import DETAIL_LOG_PATH
 from config import TIME_OUT_LOG_PATH
 from config import lf
