@@ -27,9 +27,25 @@ class Movie(Base):
             self.movie,self.url,self.sent_ch,self.sent_en
         )
 
+    def print_info(self):
+        print self.movie
+        print self.url
+        print self.sent_ch
+        print self.sent_en
+        print self.pic_localname
 
 engine = create_engine("sqlite:///movie.db")
 DBSession = sessionmaker(bind=engine)
 
 def create_table():
     Base.metadata.create_all(engine)
+
+def list_movie():
+    session = DBSession()
+    movies = session.query(Movie)
+    for m in movies:
+        m.print_info()
+    session.close()
+
+if __name__ == "__main__":
+    list_movie()
