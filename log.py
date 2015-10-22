@@ -1,5 +1,6 @@
 from config import DETAIL_LOG_PATH
 from config import TIME_OUT_LOG_PATH
+from config import lf
 from time import strftime
 import time
 
@@ -32,7 +33,10 @@ class Log(object):
         # to test if the __del__ is actually called
         # print "del..."
 
-lf = Log()
+if lf == None:
+    lf = Log()
+else:
+    pass
 
 # public function
 def log(msg):
