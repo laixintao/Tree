@@ -8,9 +8,12 @@ class LFMSpider(object):
     limit_url = "http://lessonsfrommovies.net/"
     next_page_url_head = "http://lessonsfrommovies.net/?paged="
 
-    def parser_one_page(self,page_num):
+    def parser_one_page(self,page_num=1,turl = None):
         mhp = MovieHtmlParser()
-        url = self.next_page_url_head + str(page_num)
+        if turl is not None:
+            url = turl
+        else:
+            url = self.next_page_url_head + str(page_num)
         print url,
         log("[STR]start parser page"+str(page_num))
         try:

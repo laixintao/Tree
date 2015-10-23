@@ -8,7 +8,7 @@ def download_pictures():
     to_download = movie_without_pic()
     for pic in to_download:
         try:
-            # print pic[0],pic[1]
+            print "download ",pic[0]," to ",pic[1]
             imgdata = urllib2.urlopen(pic[1],timeout=50).read()
             file = open(pic[0],"wb+")
             file.write(imgdata)
