@@ -61,6 +61,7 @@ def list_moive_could_public():
         print "-"*30
         m.print_info()
     session.close()
+
 def list_moive_could_not_public():
     session = DBSession()
     movies = session.query(Movie).filter(Movie.couldPublish==False)
@@ -106,6 +107,18 @@ def movie_without_pic():
             tobe_download.append(tmp)
     return tobe_download
 
+def set_moive_without_pic_cant_publish():
+    session = DBSession()
+    movies = session.query(Movie).filter(Movie.couldPublish==True)
+    # print movie
+    for movie in movies:
+        path = movie.pic_localname
+        if not os.path.exists(path):
+            print path,"---",movie.pic_url
+            movie.couldPublish = False
+            session.add(movie)
+    session.commit()
+    session.close()
 
 if __name__ == "__main__":
     action = int(raw_input("What you want to do ?\n"
@@ -113,7 +126,8 @@ if __name__ == "__main__":
                            "2 for list the movies could publish;\n"
                            "3 for list the uncheck movies and give a check;\n"
                            "4 for list movie without pic;\n"
-                           "5 for list the movies could NOT publish;\n"))
+                           "5 for list the movies could NOT publish;\n"
+                           "6 for set_moive_without_pic_cant_publish()\n"))
     if action == 1:
         list_movie()
     elif action == 2:
@@ -124,3 +138,5 @@ if __name__ == "__main__":
         movie_without_pic()
     elif action == 5:
         list_moive_could_not_public()
+    elif action == 6:
+        set_moive_without_pic_cant_publish()
